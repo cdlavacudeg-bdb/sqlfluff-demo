@@ -1,0 +1,33 @@
+name: SQLFluff Oracle Lint
+
+on:
+  pull_request:
+    paths:
+      - "*.sql"
+  push:
+    branches:
+      - main
+    paths:
+      - "*.sql"
+
+jobs:
+  sqlfluff-oracle:
+    name: SQLFluff Lint (Oracle)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install SQLFluff
+        run: |
+          pip install sqlfluff
+
+      - name: Run SQLFluff Lint
+        run: |
+          sqlfluff lint . --config .sqlfluff
