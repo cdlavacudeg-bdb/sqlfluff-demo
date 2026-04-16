@@ -1,0 +1,73 @@
+#############################################
+# SQLFluff - Configuración Corporativa
+# Dialecto principal: Oracle
+# Audiencia: DevOps / SRE / Data Engineers
+#############################################
+
+[sqlfluff]
+# Dialecto SQL principal
+dialect = oracle
+
+# No se usan plantillas en este contexto
+templater = raw
+
+# Longitud máxima de línea
+max_line_length = 120
+
+# Grupos de reglas habilitados explícitamente
+# Evitar configuraciones implícitas reduce ruido en CI
+rules =
+    layout,
+    capitalisation,
+    references,
+    structure,
+    ambiguous,
+    convention
+
+#############################################
+# CONFIGURACIÓN DE CAPITALIZACIÓN
+#############################################
+
+# Palabras reservadas (SELECT, FROM, WHERE, etc.)
+[sqlfluff:rules:capitalisation.keywords]
+capitalisation_policy = upper
+
+# Identificadores (tablas, columnas, alias)
+[sqlfluff:rules:capitalisation.identifiers]
+capitalisation_policy = lower
+
+# Funciones SQL (COUNT, SUM, NVL, etc.)
+[sqlfluff:rules:capitalisation.functions]
+capitalisation_policy = upper
+
+#############################################
+# FORMATO Y LAYOUT
+#############################################
+
+# Indentación estándar
+[sqlfluff:rules:layout.indent]
+indent_unit = space
+tab_space_size = 4
+
+# Alinear JOINs y CTEs
+[sqlfluff:rules:layout.cte_bracket]
+force_scoped = true
+
+#############################################
+# REFERENCIAS Y CALIDAD
+#############################################
+
+# Forzar referencias explícitas (evita ambigüedades)
+[sqlfluff:rules:references.consistent]
+force_enable = true
+
+
+#############################################
+# REGLAS EXCLUIDAS (RUIDO COMÚN EN LEGACY SQL)
+#############################################
+
+exclude_rules =
+    LT12,   # newline final obligatorio
+    LT13,    # whitespace inicial del archivo
+    structure.select_star # Evitar SELECT *
+
